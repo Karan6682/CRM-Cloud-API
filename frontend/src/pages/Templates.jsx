@@ -23,7 +23,7 @@ const Templates = () => {
     const fetchTemplates = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('http://localhost:5000/api/whatsapp/templates', {
+            const res = await axios.get('/api/whatsapp/templates', {
                 headers: { 'x-auth-token': token }
             });
             setTemplates(res.data.data || []);
@@ -89,7 +89,7 @@ const Templates = () => {
                 components: components
             };
 
-            await axios.post('http://localhost:5000/api/whatsapp/templates/create', templateData, {
+            await axios.post('/api/whatsapp/templates/create', templateData, {
                 headers: { 'x-auth-token': token }
             });
 
@@ -111,7 +111,7 @@ const Templates = () => {
         if (!window.confirm(`Are you sure you want to delete template "${name}"?`)) return;
 
         try {
-            await axios.delete(`http://localhost:5000/api/whatsapp/templates/delete/${name}`, {
+            await axios.delete(`/api/whatsapp/templates/delete/${name}`, {
                 headers: { 'x-auth-token': token }
             });
             alert('Template deleted successfully!');
@@ -366,13 +366,7 @@ const Templates = () => {
                                     {/* Message Bubble */}
                                     <div style={{
                                         background: '#fff',
-                                        borderRadius: '7px 0px 7px 7px', // Tail on top right for sender? No, business sends, user receives. 
-                                        // Wait, usually preview shows what USER sees. If business sends, it's incoming for user.
-                                        // Incoming messages are white, left aligned.
-                                        // But this is business previewing THEIR message. 
-                                        // Actually, most generic previews show it as "Incoming" on the left (White) 
-                                        // OR "Outgoing" from business on the right (Light Green). 
-                                        // Let's stick to standard Left-Inc (White) layout as it's cleaner for reading content.
+                                        // Message bubble border radius (left-aligned incoming style)
                                         borderRadius: '0px 7px 7px 7px',
                                         maxWidth: '90%',
                                         alignSelf: 'flex-start',
