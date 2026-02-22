@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE } from '../config'
 import {
     ArrowLeft,
     Smartphone,
@@ -158,7 +159,7 @@ const TokenGuide = () => {
                                 <h4 className="font-bold text-white mb-2 flex items-center gap-2"><Smartphone size={16} /> Android Phone Setup</h4>
                                 <p className="text-sm text-slate-400">अपने एंड्रॉइड फोन में <strong>MacroDroid</strong> ऐप इनस्टॉल करें और एक नियम (Macro) बनाएँ जो बैंक के SMS को इस लिंक पर भेजे:</p>
                                 <code className="block mt-2 p-3 bg-black/50 rounded text-blue-300 text-xs break-all">
-                                    http://localhost:5000/api/wallet/webhook/bank-sms
+                                    {`${API_BASE}/api/wallet/webhook/bank-sms`}
                                 </code>
                             </div>
                             <div className="p-4 bg-white/5 rounded-xl border border-white/10">

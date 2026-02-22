@@ -16,24 +16,24 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 // Fetch Meta Status
-                const metaRes = await axios.get('http://localhost:5000/api/client/meta', {
+                const metaRes = await axios.get('/api/client/meta', {
                     headers: { 'x-auth-token': token }
                 });
                 setMetaInfo(metaRes.data);
 
                 // Fetch Full Profile (Company Info)
-                const profileRes = await axios.get('http://localhost:5000/api/profile', {
+                const profileRes = await axios.get('/api/profile', {
                     headers: { 'x-auth-token': token }
                 });
                 setUserProfile(profileRes.data);
 
-                const campaignRes = await axios.get('http://localhost:5000/api/campaign/list', {
+                const campaignRes = await axios.get('/api/campaign/list', {
                     headers: { 'x-auth-token': token }
                 });
                 setCampaigns(campaignRes.data);
 
                 // Fetch Wallet Balance
-                const walletRes = await axios.get('http://localhost:5000/api/wallet/balance', {
+                const walletRes = await axios.get('/api/wallet/balance', {
                     headers: { 'x-auth-token': token }
                 });
                 setWallet(walletRes.data);

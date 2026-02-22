@@ -43,7 +43,7 @@ const Connect = () => {
 
     const fetchAccountHealth = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/whatsapp/health', {
+               const res = await axios.get('/api/whatsapp/health', {
                 headers: { 'x-auth-token': token }
             });
             setHealthStatus(res.data);
@@ -55,7 +55,7 @@ const Connect = () => {
 
     const fetchCurrentConfig = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/client/meta', {
+               const res = await axios.get('/api/client/meta', {
                 headers: { 'x-auth-token': token }
             });
             if (res.data && res.data.accessToken) {
@@ -82,7 +82,7 @@ const Connect = () => {
                 ...formData,
                 isVerified: true // Assume verified if manually entered, or let them verify later
             };
-            await axios.post('http://localhost:5000/api/client/update-meta', config, {
+            await axios.post('/api/client/update-meta', config, {
                 headers: { 'x-auth-token': token }
             });
             setStep(3);
@@ -103,7 +103,7 @@ const Connect = () => {
             // 1. Exchange for Long Lived Token (Only if shortToken is provided)
             if (shortToken && !formData.accessToken) {
                 try {
-                    const resToken = await axios.post('http://localhost:5000/api/whatsapp/token-exchange', {
+                        const resToken = await axios.post('/api/whatsapp/token-exchange', {
                         appId: '1596025668076914',
                         appSecret: 'b47ef916c821344dff83c3ed82f3c881',
                         shortToken: shortToken
@@ -125,7 +125,7 @@ const Connect = () => {
             setFormData(prev => ({ ...prev, accessToken: longLivedToken }));
 
             // 2. Discover WABA and Numbers
-            const resDiscover = await axios.post('http://localhost:5000/api/whatsapp/discover', {
+            const resDiscover = await axios.post('/api/whatsapp/discover', {
                 accessToken: longLivedToken
             }, { headers: { 'x-auth-token': token } });
 
@@ -135,11 +135,10 @@ const Connect = () => {
             });
 
             // Save basic info to user record immediately
-            await axios.post('http://localhost:5000/api/client/update-meta', {
+            await axios.post('/api/client/update-meta', {
                 wabaId: resDiscover.data.wabaId,
                 accessToken: longLivedToken,
                 isVerified: false
-            }, { headers: { 'x-auth-token': token } });
 
             setStep(2);
             if (e) alert('Your Meta Account has been successfully discovered! Now select your number below.');
@@ -171,7 +170,7 @@ const Connect = () => {
         };
 
         try {
-            await axios.post('http://localhost:5000/api/client/update-meta', config, {
+                await axios.post('/api/client/update-meta', config, {
                 headers: { 'x-auth-token': token }
             });
             setFormData(config);
@@ -191,7 +190,7 @@ const Connect = () => {
     const handleRequestOtp = async () => {
         setOtpLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/whatsapp/otp-request', {
+               await axios.post('/api/whatsapp/otp-request', {
                 phoneNumberId: formData.phoneNumberId,
                 method: otpMethod
             }, { headers: { 'x-auth-token': token } });
@@ -209,7 +208,7 @@ const Connect = () => {
 
                 try {
                     // NEW: Register Number logic
-                    await axios.post('http://localhost:5000/api/whatsapp/register', {
+                    await axios.post('/api/whatsapp/register', {
                         phoneNumberId: formData.phoneNumberId
                     }, { headers: { 'x-auth-token': token } });
                 } catch (e) {
@@ -218,7 +217,7 @@ const Connect = () => {
 
                 // Automatically move to success state
                 const finalConfig = { ...formData, isVerified: true };
-                await axios.post('http://localhost:5000/api/client/update-meta', finalConfig, {
+                await axios.post('/api/client/update-meta', finalConfig, {
                     headers: { 'x-auth-token': token }
                 });
                 setFormData(finalConfig);
@@ -234,18 +233,18 @@ const Connect = () => {
     const handleVerifyOtp = async () => {
         setOtpLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/whatsapp/otp-verify', {
+               await axios.post('/api/whatsapp/otp-verify', {
                 phoneNumberId: formData.phoneNumberId,
                 code: otpCode
             }, { headers: { 'x-auth-token': token } });
 
             // NEW: Register Number logic
-            await axios.post('http://localhost:5000/api/whatsapp/register', {
+            await axios.post('/api/whatsapp/register', {
                 phoneNumberId: formData.phoneNumberId
             }, { headers: { 'x-auth-token': token } });
 
             const finalConfig = { ...formData, isVerified: true };
-            await axios.post('http://localhost:5000/api/client/update-meta', finalConfig, {
+            await axios.post('/api/client/update-meta', finalConfig, {
                 headers: { 'x-auth-token': token }
             });
             setFormData(finalConfig);
@@ -267,7 +266,7 @@ const Connect = () => {
         e.preventDefault();
         setAddingNumber(true);
         try {
-            const resAdd = await axios.post('http://localhost:5000/api/whatsapp/add-number', {
+               const resAdd = await axios.post('/api/whatsapp/add-number', {
                 wabaId: discoveredData.wabaId,
                 cc: manualCC,
                 phoneNumber: manualNumber,
@@ -289,13 +288,13 @@ const Connect = () => {
                 isVerified: false
             };
 
-            await axios.post('http://localhost:5000/api/client/update-meta', config, {
+            await axios.post('/api/client/update-meta', config, {
                 headers: { 'x-auth-token': token }
             });
             setFormData(config);
 
             // Also refresh discovery list so it shows up
-            const resDiscover = await axios.post('http://localhost:5000/api/whatsapp/discover', {
+            const resDiscover = await axios.post('/api/whatsapp/discover', {
                 accessToken: discoveredData.longLivedToken
             }, { headers: { 'x-auth-token': token } });
 
@@ -317,13 +316,13 @@ const Connect = () => {
         if (!window.confirm('Are you sure you want to delete this number from Meta? This cannot be undone.')) return;
         setLoading(true);
         try {
-            await axios.delete(`http://localhost:5000/api/whatsapp/delete-number/${numId}`, {
+               await axios.delete(`/api/whatsapp/delete-number/${numId}`, {
                 params: { accessToken: discoveredData.longLivedToken },
                 headers: { 'x-auth-token': token }
             });
             alert('Number deleted successfully!');
             // Refresh list
-            const resDiscover = await axios.post('http://localhost:5000/api/whatsapp/discover', {
+            const resDiscover = await axios.post('/api/whatsapp/discover', {
                 accessToken: discoveredData.longLivedToken
             }, { headers: { 'x-auth-token': token } });
 
@@ -718,12 +717,12 @@ const Connect = () => {
                                                 onClick={async () => {
                                                     setOtpLoading(true);
                                                     try {
-                                                        await axios.post('http://localhost:5000/api/whatsapp/register', {
+                                                        await axios.post('/api/whatsapp/register', {
                                                             phoneNumberId: formData.phoneNumberId
                                                         }, { headers: { 'x-auth-token': token } });
 
                                                         const finalConfig = { ...formData, isVerified: true };
-                                                        await axios.post('http://localhost:5000/api/client/update-meta', finalConfig, {
+                                                        await axios.post('/api/client/update-meta', finalConfig, {
                                                             headers: { 'x-auth-token': token }
                                                         });
                                                         setFormData(finalConfig);
@@ -814,7 +813,7 @@ const Connect = () => {
                                             btn.innerHTML = '<span class="animate-spin">↻</span> Checking Meta...';
                                             try {
                                                 const pid = formData.phoneNumberId.toString().trim();
-                                                const statusRes = await axios.get(`http://localhost:5000/api/whatsapp/number-status/${pid}`, {
+                                                const statusRes = await axios.get(`/api/whatsapp/number-status/${pid}`, {
                                                     headers: { 'x-auth-token': token }
                                                 });
                                                 const status = statusRes.data;
@@ -916,7 +915,7 @@ const Connect = () => {
                                 </div>
                             </div>
 
-                            <button onClick={() => window.confirm("Are you sure you want to disconnect? This will stop all active campaigns.") && axios.post('http://localhost:5000/api/client/update-meta', { AccessToken: '', isVerified: false }, { headers: { 'x-auth-token': token } }).then(() => window.location.reload())} className="btn-secondary" style={{ width: '100%', borderColor: '#ef4444', color: '#ef4444', marginTop: 'auto' }}>
+                            <button onClick={() => window.confirm("Are you sure you want to disconnect? This will stop all active campaigns.") && axios.post('/api/client/update-meta', { AccessToken: '', isVerified: false }, { headers: { 'x-auth-token': token } }).then(() => window.location.reload())} className="btn-secondary" style={{ width: '100%', borderColor: '#ef4444', color: '#ef4444', marginTop: 'auto' }}>
                                 <Trash2 size={16} /> Disconnect Account
                             </button>
                         </div>

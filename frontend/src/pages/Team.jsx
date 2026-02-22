@@ -16,7 +16,7 @@ const Team = () => {
     const fetchAgents = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('http://localhost:5000/api/team', {
+            const res = await axios.get('/api/team', {
                 headers: { 'x-auth-token': token }
             });
             setAgents(res.data);
@@ -29,7 +29,7 @@ const Team = () => {
     const handleAddAgent = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/team/add', formData, {
+            await axios.post('/api/team/add', formData, {
                 headers: { 'x-auth-token': token }
             });
             alert("Agent added successfully!");

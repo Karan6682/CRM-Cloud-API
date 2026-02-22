@@ -40,7 +40,7 @@ const ProfilePage = () => {
 
     const fetchProfile = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/profile', {
+            const res = await axios.get('/api/profile', {
                 headers: { 'x-auth-token': token }
             });
             setUser(res.data);
@@ -60,7 +60,7 @@ const ProfilePage = () => {
 
     const fetchWhatsAppProfile = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/whatsapp/profile', {
+            const res = await axios.get('/api/whatsapp/profile', {
                 headers: { 'x-auth-token': token }
             });
             if (res.data.success && res.data.data.data) {
@@ -91,14 +91,14 @@ const ProfilePage = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/profile/update', formData, {
+            await axios.post('/api/profile/update', formData, {
                 headers: { 'x-auth-token': token }
             });
 
             if (logoFile) {
                 const form = new FormData();
                 form.append('logo', logoFile);
-                await axios.post('http://localhost:5000/api/profile/upload-logo', form, {
+                await axios.post('/api/profile/upload-logo', form, {
                     headers: {
                         'x-auth-token': token,
                         'Content-Type': 'multipart/form-data'
@@ -119,7 +119,7 @@ const ProfilePage = () => {
         e.preventDefault();
         setWaLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/whatsapp/profile-update', waProfile, {
+            await axios.post('/api/whatsapp/profile-update', waProfile, {
                 headers: { 'x-auth-token': token }
             });
             alert('WhatsApp Business Profile updated successfully!');
@@ -135,7 +135,7 @@ const ProfilePage = () => {
             return alert("PIN must be exactly 6 digits.");
         }
         try {
-            await axios.post('http://localhost:5000/api/whatsapp/two-step-verification', { pin: twoStepPin }, {
+            await axios.post('/api/whatsapp/two-step-verification', { pin: twoStepPin }, {
                 headers: { 'x-auth-token': token }
             });
             alert("2FA PIN updated successfully!");
@@ -325,10 +325,10 @@ const ProfilePage = () => {
                                             {user?.apiKey || 'No Key'}
                                         </div>
                                         <button
-                                            onClick={async () => {
+                                                    onClick={async () => {
                                                 if (!window.confirm("Generate new API Key? Old one will stop working.")) return;
                                                 try {
-                                                    await axios.post('http://localhost:5000/api/external/generate-key', {}, { headers: { 'x-auth-token': token } });
+                                                    await axios.post('/api/external/generate-key', {}, { headers: { 'x-auth-token': token } });
                                                     fetchProfile();
                                                     alert("New API Key Generated!");
                                                 } catch (err) { alert("Error generating key"); }

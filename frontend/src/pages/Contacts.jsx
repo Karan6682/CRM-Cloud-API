@@ -25,7 +25,7 @@ const Contacts = () => {
 
     const fetchContacts = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/contact', {
+            const res = await axios.get('/api/contact', {
                 headers: { 'x-auth-token': token }
             });
             setContacts(res.data);
@@ -36,7 +36,7 @@ const Contacts = () => {
 
     const fetchTags = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/contact/tags/list', {
+            const res = await axios.get('/api/contact/tags/list', {
                 headers: { 'x-auth-token': token }
             });
             setAllTags(res.data);
@@ -65,7 +65,7 @@ const Contacts = () => {
     const handleAddTag = async (contactId) => {
         if (!newTag.trim()) return;
         try {
-            await axios.post(`http://localhost:5000/api/contact/${contactId}/tag`,
+            await axios.post(`/api/contact/${contactId}/tag`,
                 { tag: newTag.trim() },
                 { headers: { 'x-auth-token': token } }
             );
@@ -79,7 +79,7 @@ const Contacts = () => {
 
     const handleRemoveTag = async (contactId, tag) => {
         try {
-            await axios.delete(`http://localhost:5000/api/contact/${contactId}/tag/${tag}`, {
+            await axios.delete(`/api/contact/${contactId}/tag/${tag}`, {
                 headers: { 'x-auth-token': token }
             });
             fetchContacts();
@@ -90,7 +90,7 @@ const Contacts = () => {
 
     const handleUpdateContact = async () => {
         try {
-            await axios.put(`http://localhost:5000/api/contact/${editingContact._id}`,
+            await axios.put(`/api/contact/${editingContact._id}`,
                 editingContact,
                 { headers: { 'x-auth-token': token } }
             );

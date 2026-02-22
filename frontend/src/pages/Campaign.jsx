@@ -23,7 +23,7 @@ const Campaign = () => {
     React.useEffect(() => {
         const fetchTemplates = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/whatsapp/templates', {
+                const res = await axios.get('/api/whatsapp/templates', {
                     headers: { 'x-auth-token': token }
                 });
                 setTemplates(res.data.data || []);
@@ -146,7 +146,7 @@ const Campaign = () => {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/campaign/start', {
+            await axios.post('/api/campaign/start', {
                 name,
                 templateName: selectedTemplate.name,
                 contacts: contactList,

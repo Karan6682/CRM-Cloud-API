@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { SOCKET_URL } from '../config'
 import Sidebar from '../components/Sidebar';
 import { Send, Phone, MessageSquare, Search, MoreVertical, CheckCheck, Sparkles } from 'lucide-react';
 
@@ -22,7 +23,7 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        socket.current = io('http://localhost:5000');
+        socket.current = io(SOCKET_URL);
         if (user) socket.current.emit('join', user.id);
 
         socket.current.on('new_message', (msg) => {
@@ -39,7 +40,7 @@ const Chat = () => {
 
     const fetchContacts = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/chat/contacts', {
+            const res = await axios.get('/api/chat/contacts', {
                 headers: { 'x-auth-token': token }
             });
             setContacts(res.data);
@@ -50,7 +51,7 @@ const Chat = () => {
         setLoading(true);
         setActiveContact(number);
         try {
-            const res = await axios.get(`http://localhost:5000/api/chat/messages/${number}`, {
+            const res = await axios.get(`/api/chat/messages/${number}`, {
                 headers: { 'x-auth-token': token }
             });
             setMessages(res.data);
@@ -70,7 +71,7 @@ const Chat = () => {
                 return;
             }
 
-            const res = await axios.post('http://localhost:5000/api/chat/ai-suggest', {
+            const res = await axios.post('/api/chat/ai-suggest', {
                 text: lastMsg.text,
                 number: activeContact
             }, { headers: { 'x-auth-token': token } });
@@ -89,7 +90,7 @@ const Chat = () => {
         const sentMsg = newMessage;
         setNewMessage('');
         try {
-            const res = await axios.post('http://localhost:5000/api/chat/send', {
+            const res = await axios.post('/api/chat/send', {
                 to: activeContact,
                 text: sentMsg
             }, { headers: { 'x-auth-token': token } });

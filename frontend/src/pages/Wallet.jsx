@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../config'
 import Sidebar from '../components/Sidebar';
 import { Wallet, Plus, ArrowUpCircle, ArrowDownCircle, Clock, CheckCircle, Smartphone, Loader, Upload, Image as ImageIcon } from 'lucide-react';
 
@@ -45,7 +46,7 @@ const WalletPage = () => {
 
         try {
             // Trigger Backend to check bank status for this specific order
-            const res = await axios.post('http://localhost:5000/api/wallet/verify-auto-order', {
+                const res = await axios.post('/api/wallet/verify-auto-order', {
                 orderId: activeOrder.orderId,
                 amount: parseFloat(rechargeAmount)
             }, { headers: { 'x-auth-token': token } });
@@ -61,7 +62,7 @@ const WalletPage = () => {
 
     const fetchWallet = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/wallet/balance', {
+            const res = await axios.get('/api/wallet/balance', {
                 headers: { 'x-auth-token': token }
             });
             setWallet(res.data);
@@ -79,7 +80,7 @@ const WalletPage = () => {
 
     const fetchAdminUpi = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/wallet/admin/upi-info', {
+            const res = await axios.get('/api/wallet/admin/upi-info', {
                 headers: { 'x-auth-token': token }
             });
             setAdminUpi(res.data);
@@ -89,7 +90,7 @@ const WalletPage = () => {
 
     const fetchPendingRequests = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/wallet/pending-requests', {
+            const res = await axios.get('/api/wallet/pending-requests', {
                 headers: { 'x-auth-token': token }
             });
             setPendingRequests(res.data);
@@ -98,7 +99,7 @@ const WalletPage = () => {
 
     const fetchAuditLog = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/wallet/admin/history', {
+            const res = await axios.get('/api/wallet/admin/history', {
                 headers: { 'x-auth-token': token }
             });
             setAuditLog(res.data);
@@ -107,7 +108,7 @@ const WalletPage = () => {
 
     const fetchRevenueStats = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/wallet/admin/stats', {
+            const res = await axios.get('/api/wallet/admin/stats', {
                 headers: { 'x-auth-token': token }
             });
             setRevenueStats(res.data);
@@ -121,7 +122,7 @@ const WalletPage = () => {
         setLoading(true);
         try {
             // STEP 1: Ask backend to create an automated order
-            const res = await axios.post('http://localhost:5000/api/wallet/create-order',
+            const res = await axios.post('/api/wallet/create-order',
                 { amount: rechargeAmount },
                 { headers: { 'x-auth-token': token } }
             );
@@ -152,7 +153,7 @@ const WalletPage = () => {
             formData.append('referenceId', txnId || 'SCREENSHOT_PROOOF');
             if (screenshot) formData.append('screenshot', screenshot);
 
-            await axios.post('http://localhost:5000/api/wallet/recharge', formData, {
+            await axios.post('/api/wallet/recharge', formData, {
                 headers: {
                     'x-auth-token': token,
                     'Content-Type': 'multipart/form-data'
@@ -176,7 +177,7 @@ const WalletPage = () => {
     const handleAdminApprove = async (userId, transactionId, action) => {
         if (!window.confirm(`Are you sure you want to ${action} this transaction?`)) return;
         try {
-            await axios.post('http://localhost:5000/api/wallet/approve-request', {
+            await axios.post('/api/wallet/approve-request', {
                 userId, transactionId, action
             }, { headers: { 'x-auth-token': token } });
 
@@ -190,7 +191,7 @@ const WalletPage = () => {
 
     const updateUpiSettings = async () => {
         try {
-            await axios.post('http://localhost:5000/api/wallet/admin/upi', upiSettings, { headers: { 'x-auth-token': token } });
+            await axios.post('/api/wallet/admin/upi', upiSettings, { headers: { 'x-auth-token': token } });
             alert("UPI Details Updated Successfully!");
             fetchAdminUpi();
         } catch (err) {
@@ -201,7 +202,7 @@ const WalletPage = () => {
     const updatePricing = async () => {
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/wallet/update-pricing',
+            await axios.post('/api/wallet/update-pricing',
                 { perMessageCost: parseFloat(newPricing) },
                 { headers: { 'x-auth-token': token } }
             );
@@ -285,8 +286,8 @@ const WalletPage = () => {
                                     <div key={req.transactionId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                                             {req.screenshot ? (
-                                                <a href={`http://localhost:5000${req.screenshot}`} target="_blank" rel="noreferrer">
-                                                    <img src={`http://localhost:5000${req.screenshot}`} alt="Proof" style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover', border: '2px solid #3b82f6' }} title="Click to view full image" />
+                                                <a href={`${API_BASE}${req.screenshot}`} target="_blank" rel="noreferrer">
+                                                    <img src={`${API_BASE}${req.screenshot}`} alt="Proof" style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover', border: '2px solid #3b82f6' }} title="Click to view full image" />
                                                 </a>
                                             ) : (
                                                 <div style={{ width: '60px', height: '60px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

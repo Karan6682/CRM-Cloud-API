@@ -22,7 +22,7 @@ const Automation = () => {
 
     const fetchRules = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/automation', {
+            const res = await axios.get('/api/automation', {
                 headers: { 'x-auth-token': token }
             });
             setRules(res.data);
@@ -31,7 +31,7 @@ const Automation = () => {
 
     const fetchTemplates = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/whatsapp/templates', {
+            const res = await axios.get('/api/whatsapp/templates', {
                 headers: { 'x-auth-token': token }
             });
             setTemplates(res.data);
@@ -44,7 +44,7 @@ const Automation = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:5000/api/automation/create', newRule, {
+            await axios.post('/api/automation/create', newRule, {
                 headers: { 'x-auth-token': token }
             });
             alert("✅ Automation Created Successfully!");
@@ -58,7 +58,7 @@ const Automation = () => {
 
     const toggleRule = async (id) => {
         try {
-            await axios.put(`http://localhost:5000/api/automation/toggle/${id}`, {}, {
+            await axios.put(`/api/automation/toggle/${id}`, {}, {
                 headers: { 'x-auth-token': token }
             });
             fetchRules();
@@ -68,7 +68,7 @@ const Automation = () => {
     const deleteRule = async (id) => {
         if (!window.confirm("Delete this automation?")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/automation/delete/${id}`, {
+            await axios.delete(`/api/automation/delete/${id}`, {
                 headers: { 'x-auth-token': token }
             });
             fetchRules();

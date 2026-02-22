@@ -28,7 +28,7 @@ const Navbar = ({ user, logout }) => {
                     }}
                 >
                     <option value="en">🇬🇧 English</option>
-                    <option value="hi">🇮🇳 हिंदी</option>
+                    {/* <option value="hi">🇮🇳 हिंदी</option> */}
                 </select>
 
                 {user ? (

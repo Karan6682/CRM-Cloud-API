@@ -60,7 +60,7 @@ const ReportsPage = () => {
     const fetchReports = async () => {
         setLoading(true);
         try {
-            const res = await axios.get(`http://localhost:5000/api/reports/summary?startDate=${dates.start}&endDate=${dates.end}`, {
+            const res = await axios.get(`/api/reports/summary?startDate=${dates.start}&endDate=${dates.end}`, {
                 headers: { 'x-auth-token': token }
             });
             setStats(res.data);
@@ -80,7 +80,7 @@ const ReportsPage = () => {
             const startTs = Math.floor(new Date(dates.start).getTime() / 1000);
             const endTs = Math.floor(new Date(dates.end).getTime() / 1000);
 
-            const res = await axios.get(`http://localhost:5000/api/whatsapp/analytics?start=${startTs}&end=${endTs}`, {
+            const res = await axios.get(`/api/whatsapp/analytics?start=${startTs}&end=${endTs}`, {
                 headers: { 'x-auth-token': token }
             });
             setMetaStats(res.data.data);
